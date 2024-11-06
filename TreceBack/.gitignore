@@ -1,3 +1,4 @@
 # Node
 /node_modules
 /config/mailer
+/.config/mailer
