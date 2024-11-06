@@ -75,7 +75,6 @@ export class DialogUsuariosComponent {
           this.cerrar();
         })
       }
-      console.log('correcto a guardar');
     }
   }
 

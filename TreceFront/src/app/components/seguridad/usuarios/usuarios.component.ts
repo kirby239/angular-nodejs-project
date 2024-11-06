@@ -40,7 +40,6 @@ export class UsuariosComponent {
   serviceInit() {
     this.usuarioService.listUsers().subscribe(list => {
       this.filteredUsuarios = list;
-      console.log(list);
       this.crearTabla(list);
     })
   }

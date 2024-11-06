@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const usuarioController = require('../controller/usuarioController');
 const { authenticateRolesuperAdmin, authenticateToken } = require('../middlewares/authMiddleware');
@@ -18,5 +19,11 @@ router.get('/list', authenticateToken, usuarioController.listUsers);
 
 // Ruta para visualizar un usuario por ID
 router.get('/view/:id', authenticateToken, authenticateRolesuperAdmin, usuarioController.getUserById);
+
+//forgot-password
+router.post('/forgot-password', usuarioController.forgotPassword);
+//new password
+router.put('/new-password', authenticateToken, usuarioController.newPassword);
+
 
 module.exports = router;

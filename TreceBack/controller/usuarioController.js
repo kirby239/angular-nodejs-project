@@ -1,5 +1,10 @@
+const { sendResetPasswordEmail } = require('../config/mailer');
 const { usuarios } = require('../models');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const generateToken = require('../config/jwt');
+const { JWT_SECRET } = process.env;
 
 // Crear un nuevo usuario 
 exports.createUser = async (req, res) => {
@@ -87,4 +92,66 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ message: 'Error fetching user', error });
     }
 };
+
+
+// Función Forgot Password
+exports.forgotPassword = async (req, res) => {
+    const { username } = req.body
+    let userEmail = "";
+    if (!username) {
+        return res.status(400).json({ message: 'Username is required' });
+    }
+    const message = 'Check your email for a link to reset your password'
+    let verificationLink = "";
+    try {
+        const user = await usuarios.findOne({ where: { username } });
+
+        if (!user) {
+            return res.status(404).json({ message: 'username not found' });
+        }
+        const { id, roleId, status, email } = user.dataValues;
+        userEmail = email;
+        const token = generateToken({ id, roleId, status });
+        verificationLink = process.env.FRONT_URL + `/new-password/${token}`
+    } catch (error) {
+        return res.status(404).json({ message: 'Error email' });
+    }
+
+    //sedEmail
+    try {
+        await sendResetPasswordEmail(userEmail, verificationLink);
+
+    } catch (error) {
+        return res.status(400).json({ message: 'Something goes wrong! ' })
+    }
+
+    return res.status(200).json({ message });//verificationLink
+};
+exports.newPassword = async (req, res) => {
+    const { newPassword, username } = req.body
+
+
+    // const resetToken = req.headers.reset ;
+    if (!newPassword || !username) {
+        return res.status(400).json({ message: 'All the fileds are required' });
+    }
+    //falta validar el token 
+    try {
+        const user = await usuarios.findOne({ where: { username } });
+
+        if (!user) {
+            return res.status(404).json({ message: 'username not found' });
+        }
+        user.password = await bcrypt.hash(newPassword, 10);
+        await user.save();
+        return res.json({ message: 'new Password changed!' })
+
+    } catch (error) {
+        return res.status(401).json({ message: 'Something goes wrong!' });
+
+    }
+};
+
+
+
 

@@ -8,6 +8,12 @@ export const routes: Routes = [
         canActivate: [publicGuard],
         loadChildren: () => import('./routes/auth.routes').then((m) => m.authRoutes)
     },
+    , {
+        path: 'new-password/:token',
+        canActivate: [publicGuard],
+        loadComponent: () =>
+            import('./components/new-password/new-password.component').then((m) => m.NewPasswordComponent)
+    },
     //rutas privadas
     {
         path: '',

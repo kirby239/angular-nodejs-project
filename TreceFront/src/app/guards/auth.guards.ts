@@ -2,7 +2,6 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
 export const privateGuard: CanActivateFn = (route, state) => {
-    console.log('privateGuard ejecutado');
 
     const token = sessionStorage.getItem('token');
     const router = inject(Router);
@@ -17,9 +16,8 @@ export const privateGuard: CanActivateFn = (route, state) => {
 };
 
 export const publicGuard: CanActivateFn = (route, state) => {
-    console.log('publicGuard ejecutado');
     const token = sessionStorage.getItem('token');
-    const router = inject(Router);
+    const router = inject(Router);    
     if (token) {
         router.navigate(['/home']);
         return false; // Impide el acceso a la ruta pública

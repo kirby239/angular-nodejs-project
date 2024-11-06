@@ -37,13 +37,10 @@ export class RegisterComponent {
 
   }
   signUp() {
-    console.log(this.registerForm.hasError('email'));
-    console.log(this.registerForm.get('email').value.legth >= 1);
 
     if (this.registerForm.valid) {
       const { username, email, password, name } = this.registerForm.value
       this.authService.register(username, password, email, name).subscribe(re => {
-        console.log(re);
         this.mensaje.MostrarMensaje(re['message'])
         this.router.navigate(['/auth/login']);
 
