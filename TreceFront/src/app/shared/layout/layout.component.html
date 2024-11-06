@@ -1,0 +1,60 @@
+<div class="example-container">
+  <div>
+    <mat-toolbar color="warn">
+      <button class="btn-togle" mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+        <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+      </button>
+
+      <span class="example-spacer"></span>
+      <div class="usuario_div">
+        <h4 class="usuario_h4">
+          <span class="usuario_layout">{{username}}</span>
+        </h4>
+      </div>
+
+      <button class="btn-togle" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <button mat-menu-item (click)="closeSession()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Cerrar Sesión</span>
+          </button>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+  </div>
+  <!---->
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav #sidenav style="width: 28%" mode="push" opened="false">
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="sidenav.toggle()" [routerLink]="['home']" style="cursor: pointer">
+        <mat-icon>home</mat-icon>
+        <span>Menu Principal</span>
+      </button>
+      <!---->
+      <button mat-menu-item (click)="showSeguridad = !showSeguridad" href="/seguridad" style="cursor: pointer">
+        <mat-icon>remove_from_queue</mat-icon>
+        <span class="full-width" *ngIf="isExpanded || isShowing">Seguridad</span>
+      </button>
+      <mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : showSeguridad}" *ngIf="isShowing || isExpanded">
+          <button mat-menu-item (click)="sidenav.toggle()" [routerLink]="['/seguridad/usuarios']"
+            style="cursor:pointer;">
+            <mat-icon>how_to_reg</mat-icon>
+            <span>Usuarios</span>
+          </button>
+        </div>
+      </mat-list-item>
+      <!---->
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+  <app-footer style="margin: 0; padding: 0;    height: 8%;"> </app-footer>
+</div>

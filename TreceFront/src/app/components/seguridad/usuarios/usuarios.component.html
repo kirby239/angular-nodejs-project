@@ -1,0 +1,83 @@
+<div class="content-input-btn sticky-top bg-light p-3">
+    <div class="input-group">
+        <span class="input-group-text" id="basic-addon1">
+            <mat-icon>search</mat-icon>
+        </span>
+        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar" [(ngModel)]="searchText"
+            (input)="filterUsuarios($event)" aria-describedby="basic-addon1" style="width: 200px;">
+        @if(rolGenerico ==tipoRol){
+        <button class="btn btn-primary ms-4" type="button" (click)="openDialog('add')">
+            Nuevo Usuario
+        </button>
+        }
+    </div>
+</div>
+<div class="card-body">
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="table-responsive">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell class="id" *matHeaderCellDef mat-sort-header="id"> Id </th>
+                <td class="id" mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+            <ng-container matColumnDef="username">
+                <th mat-header-cell class="username" *matHeaderCellDef mat-sort-header="username"> Username </th>
+                <td class="username" mat-cell *matCellDef="let element"> {{element.username}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <th class="email" mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
+                <td class="email" mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th class="name" mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </th>
+                <td class="name" mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th class="status" mat-header-cell *matHeaderCellDef mat-sort-header="status"> Status </th>
+                <td class="status" mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+            <ng-container matColumnDef="roleId">
+                <th class="roleId" mat-header-cell *matHeaderCellDef mat-sort-header="roleId"> Rol </th>
+                <td class="roleId" mat-cell *matCellDef="let element"> {{this.converRolName(element.roleId)}} </td>
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+                <th style="padding-left:2.5%;" mat-header-cell *matHeaderCellDef mat-sort-header class="botones">
+                    Acciones
+                </th>
+                <td mat-cell *matCellDef="let row" class="botones">
+                    <div class="row row-cols-4 row-cols-sm-4 row-cols-md-4">
+                        @if(rolGenerico ==tipoRol){
+                        <button
+                            style="height: 20px; position: static;background: transparent;border: none;padding-top: 5.2%;vertical-align: text-top;">
+                            <mat-icon (click)="openDialog('edit',row)" style="color: black;">edit</mat-icon>
+                        </button>
+                        }
+                        <button class="consultar"
+                            style="height: 20px; position: static;background: transparent;border: none;padding-top: 5.2%;padding-left: 10%;vertical-align: text-top;">
+                            <mat-icon (click)="openDialog('view',row)" style="color: #3f51b5;">visibility</mat-icon>
+                        </button>
+                        @if(rolGenerico ==tipoRol){
+                        <button
+                            style="height: 20px;position: static;color: red;border: none;background: transparent;padding-top: 5.2%;padding-left: 10%;vertical-align: text-top;">
+                            <mat-icon (click)="openDialogDelete(row)">delete</mat-icon>
+                        </button>
+                        }
+                    </div>
+
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns sticky:true" class="header-table"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="mat-row" style="height: 60px!important;" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No se encontraron resultados para "{{searchText}}"</td>
+            </tr>
+
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+</div>

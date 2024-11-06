@@ -1,0 +1,52 @@
+.col-lg-10_select {
+    margin-left: 5%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+
+
+}
+
+.col-lg-10_select mat-form-field {
+    width: 90%;
+}
+
+.col-lg-10_input {
+    margin-left: 5%;
+    height: 10%;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+
+
+}
+
+.col-lg-10_input mat-form-field {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.caja-input {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+
+@media(max-width: 600px) {
+    .card-body {
+        width: 100%;
+
+    }
+}
+
+.btn-danger {
+    float: right;
+}
+
+.btn-success {
+    float: right;
+}

@@ -1,0 +1,73 @@
+<form [formGroup]="usuariosForm">
+    <div class="card">
+        <div class="card-header position-sticky sticky-top"
+            style="margin:0;background-color:lightsteelblue;top: -25px;">
+            <span style="float: left; margin-top: 10px;">{{modo +' usuario'}}</span>
+            <button class=" btn btn-danger" style="align-items: flex-end;" (click)="cerrar()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            @if(this.modo != 'view'){
+            <button (click)="save()" class=" btn btn-success" style="margin-right: 10px; align-items: flex-end;">
+                <i class="fas fa-save"></i>
+            </button>
+            }
+        </div>
+        <div class="card-body">
+            <div>
+                <div class="mb-3">
+                    <mat-form-field class="example-full-width w-100" [appearance]="'outline'">
+                        <mat-label>User Name</mat-label>
+                        <input type="text" matInput placeholder="Ingrese su username" formControlName="username">
+                        <mat-error>Please enter a user name</mat-error>
+
+                    </mat-form-field>
+
+                </div>
+                <div class="mb-4">
+                    <mat-form-field class="example-full-width w-100" [appearance]="'outline'">
+                        <mat-label>email</mat-label>
+                        <input type="text" matInput placeholder="Ingrese su email" formControlName="email">
+                        @if (usuariosForm.get('email').hasError('required')){
+                        <mat-error>
+                            Please enter an email address
+                        </mat-error>
+                        }
+                        @if (usuariosForm.get('email').hasError('email') && usuariosForm.get('email').value.length > 0){
+                        <mat-error>
+                            Please enter a valid email address
+                        </mat-error>
+                        }
+                    </mat-form-field>
+
+                </div>
+                <div class="mb-4">
+                    <mat-form-field class="example-full-width w-100" [appearance]="'outline'">
+                        <mat-label>Password</mat-label>
+                        <input type="password" matInput placeholder="Ingrese su password" formControlName="password">
+                        <mat-error>Please enter a password</mat-error>
+
+                    </mat-form-field>
+                </div>
+                <div class="mb-4">
+                    <mat-form-field class="example-full-width w-100" [appearance]="'outline'">
+                        <mat-label>name</mat-label>
+                        <input type="text" matInput placeholder="Ingrese su name" formControlName="name">
+                        <mat-error>Please enter a name</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="mb-4">
+                    <mat-form-field class="example-full-width w-100" [appearance]="'outline'">
+                        <mat-label>Roles</mat-label>
+                        <mat-select formControlName="roleId">
+                            @for (rol of listRoles; track rol) {
+                            <mat-option [value]="rol.id">{{rol.description}}</mat-option>
+                            }
+                        </mat-select>
+                        <mat-error>Please enter a name</mat-error>
+
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

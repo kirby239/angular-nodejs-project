@@ -1,0 +1,7 @@
+.text-center a.text-decoration-none {
+    text-decoration: none; /* Elimina subrayado por defecto */
+}
+
+.text-center a.text-decoration-none:hover {
+    text-decoration: underline !important; /* Agrega subrayado al pasar el mouse */
+}
