@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { usuarios, roles } = require('../models');
 const { JWT_SECRET } = process.env;
+const rolesDefault = require('../model/rolesDefaullt');
 
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -26,7 +27,7 @@ const authenticateRolesuperAdmin = async (req, res, next) => {
         if (!id || !roleId) return res.sendStatus(403);
 
         // Verifica si el rol es SuperAdmin (por ejemplo, roleId === 1)
-        if (roleId !== roles.GENERICO) return res.status(403).json({ message: 'Access denied' });
+        if (roleId == rolesDefault.roles.GENERICO) return res.status(403).json({ message: 'Access denied' });
 
         // Verifica si el usuario todavía existe en la base de datos
         const user = await usuarios.findByPk(id);

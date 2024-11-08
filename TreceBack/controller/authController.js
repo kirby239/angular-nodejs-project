@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 const { usuarios } = require('../models');
 const generateToken = require('../config/jwt');
+const rolesDefault = require('../model/rolesDefaullt');
 //aca creas un nuevo usuario
 exports.register = async (req, res) => {
     try {
@@ -12,7 +13,6 @@ exports.register = async (req, res) => {
                 [Op.or]: [{ username }, { email }] // Busca si hay coincidencias en username y email
             }
         });
-
         if (existingUser) {
             // Si ya existe un usuario con el mismo username o email
             return res.status(400).json({ message: 'Username or email already exists' });
@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
 
         // Si no existe, proceder a crear el nuevo usuario
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await usuarios.create({ username, password: hashedPassword, email, name, roleId: roles.GENERICO, }); //rol por defecto es generico
+        const user = await usuarios.create({ username, password: hashedPassword, email, name, roleId: rolesDefault.roles.GENERICO, }); //rol por defecto es generico
         res.status(201).json({ message: 'User created successfully', user });
     } catch (error) {
         res.status(500).json({ message: 'Error registering user', error });

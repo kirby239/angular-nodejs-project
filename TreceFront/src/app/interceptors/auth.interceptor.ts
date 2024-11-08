@@ -23,7 +23,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     });
     return next(cloneRequest).pipe(
         catchError((err) => {
-            if (err.status === 401 || 403) {
+            if (err.status === 401 || err.status === 403) {
                 sessionStorage.removeItem('token')
                 sessionStorage.removeItem('rolId');
                 sessionStorage.removeItem('username');

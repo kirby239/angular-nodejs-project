@@ -3,6 +3,8 @@ const { usuarios } = require('../models');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const { Op } = require('sequelize');
+
 const generateToken = require('../config/jwt');
 const { JWT_SECRET } = process.env;
 
@@ -36,6 +38,17 @@ exports.updateUser = async (req, res) => {
 
         const user = await usuarios.findByPk(id);
         if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const existingUser = await usuarios.findOne({
+            where: {
+                [Op.or]: [{ username }, { email }],// Busca si hay coincidencias en username y email
+                id: { [Op.ne]: id }
+            }
+        });
+        if (existingUser) {
+            // Si ya existe un usuario con el mismo username o email
+            return res.status(400).json({ message: 'Username or email already exists' });
+        }
 
         user.username = username || user.username;
         user.email = email || user.email;
